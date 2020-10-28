@@ -53,15 +53,17 @@
     flex: 1;
     padding: 1rem;
 }
-.fa-play-circle{
+.fa-pause-circle,.fa-play-circle{
     color: #a89fb1;
 }
 .fa-play-circle.active{
     color: #19e68c;
 }
 
-.fa-play-circle:hover{
+.fa-play-circle:hover, .fa-pause-circle:hover{
     cursor:pointer;
     color: #19e68c;
+    stroke: rgba(25, 230, 140, .5);
+    stroke-width: 10;
 }
 

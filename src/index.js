@@ -121,14 +121,14 @@ app.post('/audio/upload',(req, res) => {
       
       upload.single('mp3')(req, res, (err) => {
       console.log(req.body);
-      console.log(req.file)
+      //console.log(req.file)
       if (err) {
         return res.status(400).json({ message: "Upload Request Validation Failed" });
-      } else if(!req.body.name) {
-        return res.status(400).json({ message: "No track name in request body" });
-      }
+      }else if(req.body.songName === ""){
+        return res.status(400).json({ message: "Name of the song is required" });
+      } 
       //console.log(req.body)
-      let trackName = req.body.name;
+      let trackName = req.body.songName;
        
       // Covert buffer to Readable Stream
       const readableTrackStream = new Readable();
@@ -143,7 +143,10 @@ app.post('/audio/upload',(req, res) => {
           originalname: req.file.originalname || "Not found originalname",
           mimetype: req.file.mimetype || "Not found mimetype",
           encoding: req.file.encoding || "not found encoding",
-          duration: req.body.duration || "0"
+          duration: req.body.duration || "0",
+          album: req.body.songAlbum || "",
+          artist: req.body.songArtist || "",
+          name: req.body.songName || ""
       }
       let uploadStream = bucket.openUploadStream(trackName, {metadata});
       let id = uploadStream.id;
@@ -190,7 +193,7 @@ app.post('/audio/upload',(req, res) => {
     })*/
 
     let downloadStream = bucket.openDownloadStream(trackID);
-  
+    console.log(downloadStream);
     downloadStream.pipe(res);
 
 })
