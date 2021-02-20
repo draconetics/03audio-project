@@ -1,0 +1,32 @@
+.main-nav{
+    background-color: #000;
+
+}
+
+.main-menu {
+    display: flex;
+    justify-content: space-between;
+}
+
+.main-menu ul li{
+    display: inline-block;
+}
+
+.main-menu ul li a{
+    display: block;
+    padding: 1rem;
+    color: #fff;
+}
+
+.main-menu ul li a:hover, .main-menu ul li a.active{
+    color: #19e68c;
+}
+
+
+.main-menu__logo{
+    font-size: 1.5rem;
+    font-weight: bolder;
+    letter-spacing: 2px;
+    padding: .9rem;
+    color: #fff;
+}

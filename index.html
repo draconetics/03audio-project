@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+</head>
+<body>
+    THIS IS AN AUDIO
+    <audio id="sample" src="http://localhost:3005/audio/5f998de43a317c0f0ce5f325" onTimeUpdate={update()} preload="auto" controls></audio>
+    <button onclick={play()}>play</button>
+    <button onclick={pause()}>pause</button>
+    <button onclick={change()}>10 seconds</button>
+    <script>
+        var sample = document.getElementById('sample');
+        sample.seekable
+        sample.currentTime=50.0
+        var play = () => {
+            sample.load();
+            sample.play();
+            //setTimeout("sample.pause()", 10);
+        };
+        var pause = () => sample.pause();
+        var change = () => sample.currentTime=30;
+        var update = () => console.log(sample.currentTime);
+        
+        console.log(sample.currentTime);
+
+        var context;
+        window.addEventListener('load', init, false);
+        function init() {
+        try {
+            // Fix up for prefixing
+            window.AudioContext = window.AudioContext||window.webkitAudioContext;
+            context = new AudioContext();
+        }
+        catch(e) {
+            alert('Web Audio API is not supported in this browser');
+        }
+        }
+    </script>
+</body>
+</html>

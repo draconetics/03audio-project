@@ -1,0 +1,56 @@
+.player{
+    background-color: black;
+    height: 10rem;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    z-index: 2;
+    box-shadow: 1px -.1px 1px 1px #19e68c;
+}
+
+.player-container{
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    color:#fff;
+
+}
+
+.player-container__data{
+    display: flex;
+    justify-content: center;
+}
+
+.player-container__data span{
+    margin: 0 2rem;
+}
+
+.player-container__bar{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.player-container__bar p{
+
+    margin: 0 1rem;
+}
+
+.player-progress-bar{
+    width: 50%;
+    height: .3rem;
+    margin-top: 1rem;
+}
+
+.player-progress-bar[value] {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: white;
+    color: #19e68c;
+    height: 5px;
+  }
+
+.player-progress-bar::-moz-progress-bar { background: #19e68c; }
+.player-progress-bar::-webkit-progress-value { background: #19e68c; }

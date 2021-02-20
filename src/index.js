@@ -86,7 +86,7 @@ app.get('/audio/:trackID', (req, res) => {
     } catch(err) {
       return res.status(400).json({ message: "Invalid trackID in URL parameter. Must be a single String of 12 bytes or a string of 24 hex characters" }); 
     }
-    res.set('content-type', 'audio/mp3');
+    res.set('content-type', 'audio/mpeg');
     res.set('accept-ranges', 'bytes');
   
     let bucket = new mongodb.GridFSBucket(db, {

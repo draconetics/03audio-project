@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>EXAMPLE WITH CONTEXT</h1>
+    <progress id="progressbar" max="100" min="0" value="70" onchange="progressbar(e)"> 70% </progress>
+    <button data-js="play">play</button>
+<button data-js="stop">stop</button>
+<button id="forward">forward</button>
+
+<button id="music01" onclick="playSong(0)">music 01</button>
+<button id="music02" onclick="playSong(1)">music 02</button>
+<button id="music03" onclick="playSong(2)">music 03</button>
+
+<div data-js="info"></div>
+
+<script>
+var sound=null;
+
+function progressbar(e){
+    console.log('progress bar');
+    console.log(e);
+}
+
+function createSound(bufferList, context) {
+    var sourceNode = null,
+        startedAt = 0,
+        pausedAt = 0,
+        playing = false;
+
+    var play = function(currentId) {
+        var offset = pausedAt;
+        stop();
+        if(offset > getDuration(currentId)){
+            stop();
+            return;
+        }
+
+        sourceNode = context.createBufferSource();
+        sourceNode.connect(context.destination);
+        sourceNode.buffer = bufferList[currentId];
+        sourceNode.start(0, offset);
+        //sourceNode.start(0, 30);
+
+        startedAt = context.currentTime - offset;
+        console.log('context : '+context.currentTime);
+        pausedAt = 0;
+        playing = true;
+        update(currentId);
+    };
+
+    var forward = function(currentId) {
+        pause();
+        if((pausedAt+5) < getDuration(currentId)){
+            pausedAt = pausedAt + 5;
+        }
+        console.log(pausedAt);
+        play(currentId);
+    }
+
+    var pause = function() {
+        console.log(context.currentTime);
+        var elapsed = context.currentTime - startedAt;
+        stop();
+        pausedAt = elapsed;
+        console.log('paused at : '+pausedAt);
+    };
+
+    var stop = function() {
+        if (sourceNode) {          
+            sourceNode.disconnect();
+            sourceNode.stop(0);
+            sourceNode = null;
+        }
+        pausedAt = 0;
+        startedAt = 0;
+        playing = false;
+    };
+  
+    var getPlaying = function() {
+        return playing;
+    };
+  
+    var getCurrentTime = function(currentId) {
+        console.log(context.currentTime);
+        if(pausedAt) {
+            return pausedAt;
+        }
+        if(getPlaying()) {
+            const audioCurrentTime =  context.currentTime - startedAt;
+            console.log(currentId);
+            if(audioCurrentTime > getDuration(currentId))
+                stop();
+            else
+                return audioCurrentTime;
+        }
+        return 0;
+    };
+  
+    var getDuration = function(currentId) {
+      return bufferList[currentId].duration;
+    };
+
+    return {
+        getCurrentTime: getCurrentTime,
+        getDuration: getDuration,
+        getPlaying: getPlaying,
+        play: play,
+        pause: pause,
+        stop: stop,
+        forward: forward,
+    };
+}
+
+
+
+
+
+var play = document.querySelector('[data-js="play"]'),
+    stop = document.querySelector('[data-js="stop"]'),
+    info = document.querySelector('[data-js="info"]');
+  
+play.addEventListener('click', function(id) {
+    playSong(id);
+});
+
+function playSong(id){
+    
+    if(currentId === id){
+        if (sound.getPlaying()) {
+            sound.pause();
+            play.innerHTML = 'play';
+        } else {
+            console.log(currentId);
+            sound.play(currentId);
+            play.innerHTML = 'pause';
+        }
+    }else{
+        currentId = id;
+        sound.stop;
+        sound.play(currentId);
+        
+    }
+    progressBar.min = 0;
+    progressBar.max = sound.getDuration(currentId).toFixed(1);
+}
+
+stop.addEventListener('click', function() {
+    sound.stop();
+    play.innerHTML = 'play';
+});
+
+document.getElementById('forward').addEventListener('click',function(){
+    if(currentId >= 0)
+    sound.forward(currentId);
+});
+
+function update() {
+    window.requestAnimationFrame(update);
+    if(currentId>=0){
+        currentProgress = sound.getCurrentTime(currentId).toFixed(1)
+        progressBar.value = currentProgress;
+        //var duration = sound.getDuration(currentId).toFixed(1)
+        info.innerHTML = currentProgress + '/' + progressBar.max;    
+    }   
+}
+update();
+var context;
+var bufferLoader;
+var currentId=-1;
+var currentProgress = 0;
+var progressBar = document.getElementById('progressbar');
+
+function init() {
+  // Fix up prefixing
+  window.AudioContext = window.AudioContext || window.webkitAudioContext;
+  context = new AudioContext();
+
+  bufferLoader = new BufferLoader(
+    context,
+    [
+      'http://localhost:3005/audio/5f998de43a317c0f0ce5f325',
+      'http://localhost:3005/audio/5f999c986276310adcac5f21',
+      'http://localhost:3005/audio/5f998f1a3a317c0f0ce5f33e'
+    ],
+    async function finishedLoading(bufferList) {
+        sound = await createSound(bufferList,context);
+        
+    }
+    );
+
+  bufferLoader.load();
+}
+init();
+
+
+
+/* 
+* --BUFFER LOADER--
+*/
+
+function BufferLoader(context, urlList, callback) {
+  this.context = context;
+  this.urlList = urlList;
+  this.onload = callback;
+  this.bufferList = new Array();
+  this.loadCount = 0;
+
+
+  this.loadBuffer = function(url, index) {
+  // Load buffer asynchronously
+  var request = new XMLHttpRequest();
+  request.open("GET", url, true);
+  request.responseType = "arraybuffer";
+
+  var loader = this;
+
+  request.onload = function() {
+    // Asynchronously decode the audio file data in request.response
+    loader.context.decodeAudioData(
+      request.response,
+      function(buffer) {
+        if (!buffer) {
+          alert('error decoding file data: ' + url);
+          return;
+        }
+        loader.bufferList[index] = buffer;
+        if (++loader.loadCount == loader.urlList.length)
+          loader.onload(loader.bufferList);
+      },
+      function(error) {
+        console.error('decodeAudioData error', error);
+      }
+    );
+  }
+
+  request.onerror = function() {
+    alert('BufferLoader: XHR error');
+  }
+
+  request.send();
+}
+
+this.load = function() {
+  for (var i = 0; i < this.urlList.length; ++i)
+  this.loadBuffer(this.urlList[i], i);
+}
+
+
+}
+
+    </script>
+</body>
+</html>
