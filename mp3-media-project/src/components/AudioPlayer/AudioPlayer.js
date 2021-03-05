@@ -1,14 +1,13 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlayCircle, faPauseCircle } from '@fortawesome/free-solid-svg-icons';
+import ProgressBar from './ProgressBar';
 
 import './AudioPlayer.css';
-import ProgressBar from './ProgressBar';
 
 const AudioPlayer = ({
   audioSelected,
   playMusic,
-  PLAYER,
   musicTimer,
   seek,
 }) => {
@@ -32,7 +31,14 @@ const AudioPlayer = ({
   };
 
   return (
-    <div className="player">
+    <div
+      className="player"
+      style={{
+        backgroundImage: `url(${
+          process.env.PUBLIC_URL + '/music.jpg'
+        }`,
+      }}
+    >
       <div className="player-container">
         <div className="player-container__data">
           <span

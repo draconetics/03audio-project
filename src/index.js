@@ -177,20 +177,7 @@ app.post('/audio/upload',(req, res) => {
       let bucket = new mongodb.GridFSBucket(db, {
         bucketName: 'tracks'
       });
-      /*
-      bucket.find({_id:trackID}).toArray((err,files) =>{
-        if(!files[0] || files.length === 0){
-            return res.status(500).json({
-                success: false,
-                message: 'No available'
-            });      
-        }
-        res.set('Content-Length', files[0].chunkSize)
-        res.status(200).json({
-            success: true,
-            file: files[0]
-        });
-    })*/
+
 
     let downloadStream = bucket.openDownloadStream(trackID);
     console.log(downloadStream);

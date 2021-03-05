@@ -67,7 +67,7 @@ const UploadAudio = (props) => {
   return (
     <>
 
-      <form className="container form">
+      <form className="form container">
         <h2>Upload new Audio</h2>
         <div className="form-group">
           <label>Select new Audio :</label>
@@ -80,6 +80,7 @@ const UploadAudio = (props) => {
             name="songName"
             value={audioData.songName}
             onChange={(e) => changeValue(e)}
+            autocomplete="off"
           />
         </div>
         <div className="form-group">
@@ -89,6 +90,7 @@ const UploadAudio = (props) => {
             name="songAlbum"
             value={audioData.songAlbum}
             onChange={(e) => changeValue(e)}
+            autocomplete="off"
           />
         </div>
         <div className="form-group">
@@ -98,6 +100,7 @@ const UploadAudio = (props) => {
             name="songArtist"
             value={audioData.songArtist}
             onChange={(e) => changeValue(e)}
+            autocomplete="off"
           />
         </div>
         <button type="button" className="btn btn__primary" onClick={() => uploadAudio()}>Upload</button>

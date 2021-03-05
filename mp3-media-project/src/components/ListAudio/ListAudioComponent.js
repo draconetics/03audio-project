@@ -119,7 +119,6 @@ class ListAudio extends React.Component {
                     role="button"
                     tabIndex="0"
                   >
-                    {JSON.stringify(item)}
                     <FontAwesomeIcon
                       icon={
                           audioSelected.keyPlayNow === index
@@ -146,12 +145,14 @@ class ListAudio extends React.Component {
               ))}
           </ul>
         </div>
-        <AudioPlayer
-          audioSelected={audioSelected}
-          playMusic={this.playMusic}
-          musicTimer={this.state.musicTimer}
-          seek={this.seek}
-        />
+        <div className="player-section">
+          <AudioPlayer
+            audioSelected={audioSelected}
+            playMusic={this.playMusic}
+            musicTimer={this.state.musicTimer}
+            seek={this.seek}
+          />
+        </div>
       </>
     );
   }

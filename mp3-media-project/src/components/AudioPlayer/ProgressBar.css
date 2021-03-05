@@ -1,0 +1,22 @@
+.player-container__bar p{
+
+    margin: 0 1rem;
+}
+
+.player-progress-bar{
+    width: 50%;
+    height: .3rem;
+    margin-top: 1rem;
+    box-shadow: 1px 1px 4px 1px #19e68c;
+}
+
+.player-progress-bar[value] {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: white;
+    color: #19e68c;
+    height: 5px;
+  }
+
+.player-progress-bar::-moz-progress-bar { background: #19e68c; }
+.player-progress-bar::-webkit-progress-value { background: #19e68c; }

@@ -4,7 +4,6 @@ import UploadAudio from './components/UploadAudio/UploadAudioComponent';
 import ListAudio from './components/ListAudio/ListAudioComponent';
 import Notfound from './components/NotFoundComponent';
 import Menu from './components/Menu/MenuComponent';
-import './App.css';
 
 function App() {
   return (

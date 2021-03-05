@@ -1,5 +1,7 @@
 import React from 'react';
 
+import './ProgressBar.css';
+
 const ProgressBar = ({ audioSelected, musicTimer, seek }) => {
   const calculateDuration = () => {
     let length = 0;
@@ -43,10 +45,7 @@ const ProgressBar = ({ audioSelected, musicTimer, seek }) => {
 
   return (
     <div className="player-container__bar">
-      <p>
-        index:
-        {audioSelected.keyPlayNow}
-      </p>
+
       <p>{ musicTimer ? formatTimer() : '00:00' }</p>
 
       <progress

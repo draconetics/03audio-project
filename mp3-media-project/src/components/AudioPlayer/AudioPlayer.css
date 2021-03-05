@@ -1,11 +1,14 @@
 .player{
-    background-color: black;
+    background-color:black;
     height: 10rem;
     width: 100%;
     position: fixed;
     bottom: 0;
     z-index: 2;
     box-shadow: 1px -.1px 1px 1px #19e68c;
+
+    background-size: cover;
+    background-position:  0% 80%;
 }
 
 .player-container{
@@ -23,6 +26,8 @@
 
 .player-container__data span{
     margin: 0 2rem;
+    stroke: rgba(25, 230, 140, .5);
+    stroke-width: 10;
 }
 
 .player-container__bar{
@@ -33,24 +38,3 @@
 }
 
 
-.player-container__bar p{
-
-    margin: 0 1rem;
-}
-
-.player-progress-bar{
-    width: 50%;
-    height: .3rem;
-    margin-top: 1rem;
-}
-
-.player-progress-bar[value] {
-    -webkit-appearance: none;
-    appearance: none;
-    background-color: white;
-    color: #19e68c;
-    height: 5px;
-  }
-
-.player-progress-bar::-moz-progress-bar { background: #19e68c; }
-.player-progress-bar::-webkit-progress-value { background: #19e68c; }
