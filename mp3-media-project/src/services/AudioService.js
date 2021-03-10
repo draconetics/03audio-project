@@ -5,8 +5,8 @@ class AudioService {
     return http.post('/audio/upload', data, headers);
   }
 
-  async getAudioList() {
-    return await http.get('/audio/list');
+  getAudioList() {
+    return http.get('/audio/list');
   }
 }
 

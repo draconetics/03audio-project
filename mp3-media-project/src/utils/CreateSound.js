@@ -1,11 +1,19 @@
-export default class CreateSound {
-  constructor(bufferList, context) {
+export class CreateSound {
+  constructor(bufferList = null, context = null) {
     this.bufferList = bufferList;
     this.context = context;
     this.sourceNode = null;
     this.startedAt = 0;
     this.pausedAt = 0;
     this.playing = false;
+  }
+
+  setBufferList(bufferlist) {
+    this.bufferList = bufferlist;
+  }
+
+  setContext(newContext) {
+    this.context = newContext;
   }
 
   play(currentId) {
@@ -23,7 +31,6 @@ export default class CreateSound {
     // sourceNode.start(0, 30);
 
     this.startedAt = this.context.currentTime - offset;
-    console.log(`context : ${this.context.currentTime}`);
     this.pausedAt = 0;
     this.playing = true;
   }
@@ -81,3 +88,5 @@ export default class CreateSound {
     return this.sourceNode;
   }
 }
+
+export const AUDIOPLAYER = new CreateSound();

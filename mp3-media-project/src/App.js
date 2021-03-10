@@ -1,8 +1,8 @@
 import React from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
-import UploadAudio from './components/UploadAudio/UploadAudioComponent';
-import ListAudio from './components/ListAudio/ListAudioComponent';
-import Notfound from './components/NotFoundComponent';
+import UploadAudio from './pages/UploadAudio/UploadAudioComponent';
+import ListAudio from './pages/ListAudio/ListAudioComponent';
+import Notfound from './pages/NotFoundComponent';
 import Menu from './components/Menu/MenuComponent';
 
 function App() {

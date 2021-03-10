@@ -6,16 +6,6 @@ const DB_TESTING = 'mongodb://localhost:27017/01testing';
 function connect() {
     return new Promise((resolve, reject) => 
         {
-            // if (process.env.NODE_ENV === 'test') 
-            // {
-            //     connectToDataBase(resolve, reject, DB_TESTING);                
-            // } 
-            // if (process.env.NODE_ENV === 'production') 
-            // {
-            //     connectToDataBase(resolve, reject, DB_PROD);                
-            // }
-            
-            //developer mode
             connectToDataBase(resolve, reject, DB_URI);                
         }
     );//end promise

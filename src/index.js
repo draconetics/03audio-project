@@ -2,7 +2,6 @@
  * NPM Module dependencies.
  */
 const express = require('express');
-const trackRoute = express.Router();
 const bodyparser = require('body-parser')
 const multer = require('multer');
 
@@ -14,8 +13,6 @@ const ObjectID = require('mongodb').ObjectID;
  * NodeJS Module dependencies.
  */
 const { Readable } = require('stream');
-const { response } = require('express');
-
 
 /**
  * Create Express server && Express Router configuration.
@@ -52,8 +49,8 @@ MongoClient.connect('mongodb://localhost:27017',{ useUnifiedTopology: true } ,(e
  */
 
  app.get('/', (req,res) => {
-     console.log("hello world")
-     res.json("hello world");
+     console.log("backend is running...")
+     res.json("backend is running...");
  })
 
  app.get("/audio/list", (req, res)=>{

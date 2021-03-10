@@ -1,52 +1,41 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React from 'react';
+import PropTypes from 'prop-types';
+import { AUDIOPLAYER } from '../../utils/CreateSound';
+import { isEmptyObject, calculateDuration, formatTimer } from '../../utils/operations';
 
 import './ProgressBar.css';
 
-const ProgressBar = ({ audioSelected, musicTimer, seek }) => {
-  const calculateDuration = () => {
-    let length = 0;
-    if (audioSelected.audio !== '') {
-      length = parseInt(audioSelected.audio.metadata.duration, 10);
-
-      const minutes = Math.floor(length / 60);
-      const secondsInt = length - minutes * 60;
-      const secondsString = secondsInt.toString();
-      const seconds = secondsString.substr(0, 2);
-      length = `${minutes}:${seconds}`;
-    }
-
-    return length;
-  };
-
-  const formatTimer = () => {
-    const currentMinute = parseInt(musicTimer / 60, 10) % 60;
-    const currentSecondsLong = musicTimer % 60;
-    const currentSeconds = currentSecondsLong.toFixed();
-    const currentTime = `${
-      currentMinute < 10 ? `0${currentMinute}` : currentMinute
-    }:${currentSeconds < 10 ? `0${currentSeconds}` : currentSeconds}`;
-    return currentTime;
-  };
+const ProgressBar = ({ audioSelected }) => {
+  const [timer, setTimer] = React.useState(0);
+  React.useEffect(() => {
+    let TIMER = setInterval(() => {
+      const miliseconds = AUDIOPLAYER.getCurrentTime(audioSelected.keyPlayNow);
+      console.log(miliseconds);
+      setTimer(miliseconds);
+    }, 100);
+    return () => clearInterval(TIMER);
+  }, []);
 
   const seekBar = (event) => {
-    const percent = (event.pageX - event.target.offsetLeft) / event.target.offsetWidth;
-    if (audioSelected.audio) {
+    if (!isEmptyObject(audioSelected.audio)) {
+      const percent = (event.pageX - event.target.offsetLeft) / event.target.offsetWidth;
       const time = percent * parseInt(audioSelected.audio.metadata.duration, 10);
-      seek(audioSelected.keyPlayNow, time);
+      AUDIOPLAYER.seek(audioSelected.keyPlayNow, time);
     }
   };
 
   const getProgressValue = () => {
-    if (musicTimer === 0) {
+    if (timer === 0) {
       return 0;
     }
-    return musicTimer / parseInt(audioSelected.audio.metadata.duration, 10);
+    return timer / parseInt(audioSelected.audio.metadata.duration, 10);
   };
 
   return (
     <div className="player-container__bar">
 
-      <p>{ musicTimer ? formatTimer() : '00:00' }</p>
+      <p>{ timer ? formatTimer(timer) : '00:00' }</p>
 
       <progress
         onClick={(event) => seekBar(event)}
@@ -54,16 +43,28 @@ const ProgressBar = ({ audioSelected, musicTimer, seek }) => {
         className="player-progress-bar"
         value={getProgressValue()}
         max="1"
-        role="progress"
-        tabIndex="0"
       />
       <p>
-        {audioSelected.audio !== ''
-          ? calculateDuration(audioSelected.audio.metadata.duration)
+        {!isEmptyObject(audioSelected.audio)
+          ? calculateDuration(audioSelected)
           : ''}
       </p>
     </div>
   );
+};
+
+const audioItem = {
+  audio: PropTypes.shape({
+    metadata: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      album: PropTypes.string.isRequired,
+      artist: PropTypes.string.isRequired,
+      duration: PropTypes.string.isRequired,
+    }),
+  }),
+};
+ProgressBar.propTypes = {
+  audioSelected: PropTypes.shape(audioItem).isRequired,
 };
 
 export default React.memo(ProgressBar);
